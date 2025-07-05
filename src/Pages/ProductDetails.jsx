@@ -7,7 +7,7 @@ const user = {
 };
 
 const product = {
-  image: 'https://via.placeholder.com/300x200.png?text=Product+Image',
+  image: 'https://m.media-amazon.com/images/G/31/smartcommerce/blog/smartbiz/img_14.jpg',
   name: 'Sample Product',
   brand: 'BrandX',
   category: 'Electronics & Gadgets',
@@ -21,7 +21,7 @@ const product = {
 
 const ProductDetails = () => {
   const [showModal, setShowModal] = useState(false);
-  const [quantity, setQuantity] = useState(product.minimumSellingQuantity);
+  const [quantity] = useState(product.minimumSellingQuantity);
 
   return (
     <div className="min-h-screen bg-base-200 py-8">
@@ -67,7 +67,7 @@ const ProductDetails = () => {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-40 backdrop-blur-sm">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
             <button
               className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"

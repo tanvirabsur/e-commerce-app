@@ -8,7 +8,7 @@ const handleLogin = (e) => {
     const formData = new FormData(form);
     const formObject = Object.fromEntries(formData.entries());
 
-    axios.post('http://localhost:8080/user', formObject, {
+    axios.post('https://assignment-11-server-six-sage.vercel.app//user', formObject, {
         withCredentials: true
     })
     .then(res => console.log(res.data))

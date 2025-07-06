@@ -198,7 +198,7 @@ const AddProduct = () => {
 
                         {/* Submit Button */}
                         <div className="form-control pt-4">
-                            <button onClick={notify} type="submit" className="btn btn-primary w-full">
+                            <button  onClick={notify} type="submit" className="btn btn-primary w-full">
                                 Add Product
                             </button>
                         </div>

@@ -24,7 +24,7 @@ const Authprovider = ({ children }) => {
         return signInWithEmailAndPassword(auth, email, password)
     }
 
-    const logout = () => {
+    const Logout = () => {
         return signOut(auth).then(() => {
             // console.log('logout successfully')
         }).catch((err) => {
@@ -49,7 +49,7 @@ const Authprovider = ({ children }) => {
         createUser,
         updateUser,
         login,
-        logout,
+        Logout,
         loading,
         user
     }

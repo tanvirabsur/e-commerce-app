@@ -1,50 +1,117 @@
-import React from 'react';
-import { NavLink } from 'react-router';
+import React, {   use, useEffect, useState } from 'react';
 
-const NavBar = () => {
+import { NavLink } from 'react-router';
+import { Tooltip } from 'react-tooltip'
+import { AuthContext } from '../authprovider/Authprovider';
+
+const Navbar = () => {
+    const {  user,Logout } = use(AuthContext)
+    
+// Logout,
+    const [theme, setTheme] = useState(
+        localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
+    );
+    const handleToggle = (e) => {
+        if (e.target.checked) {
+            setTheme("dark");
+        } else {
+            setTheme("light");
+        }
+    };
+    useEffect(() => {
+        localStorage.setItem("theme", theme);
+        const localThem = localStorage.getItem("theme");
+        document.querySelector("html").setAttribute("data-theme", localThem);
+    }, [theme]);
+
     return (
-        <div className="navbar bg-base-100 shadow-sm">
-            <div className="navbar-start">
-                <div className="dropdown">
-                    <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
-                    </div>
-                    <ul
-                        tabIndex={0}
-                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                        <li><a>Item 1</a></li>
-                        <li>
-                            <a>Parent</a>
-                            <ul className="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
-                            </ul>
-                        </li>
-                        <li><a>Item 3</a></li>
+        <>
+            <div className="navbar justify-between bg-base-100 shadow-sm">
+                <div className="navbar-start">
+
+                    <NavLink className={'btn btn-ghost text-xl'} to={'/'}>Hobby Hub</NavLink>
+                </div>
+                <div className="navbar-center hidden lg:flex">
+                    <ul className="menu menu-horizontal px-1">
+                        <li><NavLink to={'/'}>Home</NavLink></li>
+                        <li><NavLink to={'/all-groups'}>All Groups</NavLink></li>
+                        <li><NavLink to={'/createGroup'}>Create Group</NavLink></li>
+                        <li><NavLink to={'/my-group'}>My Groups (Private)</NavLink></li>
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">daisyUI</a>
+                {/*  */}
+
+                {user ? <div className="navbar-end gap-5">
+                    <label className="toggle text-base-content">
+                        <input type="checkbox" onClick={handleToggle} />
+                        <svg aria-label="enabled" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <g
+                                strokeLinejoin="round"
+                                strokeLinecap="round"
+                                strokeWidth="4"
+                                fill="none"
+                                stroke="currentColor"
+                            >
+                                <path d="M20 6 9 17l-5-5"></path>
+                            </g>
+                        </svg>
+                        <svg
+                            aria-label="disabled"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <path d="M18 6 6 18" />
+                            <path d="m6 6 12 12" />
+                        </svg>
+                    </label>
+
+                    <div className="dropdown dropdown-end ">
+                        <div tabIndex={0} role="button" 
+                        className="btn btn-ghost btn-circle avatar  tooltip my-tooltip tooltip-bottom" 
+                        // data-tooltip-id="my-tooltip" 
+                        // data-tooltip-content={user?.displayName}
+                        //     data-tooltip-place="top"
+                            >
+                            <Tooltip 
+                            content={user?.displayName}
+                            anchorSelect='.my-tooltip'
+                            style={{height: '70px', width: '100px'}}
+                            place="top"
+                             />
+                            <div className="w-10 rounded-full " >
+
+                                <img
+
+                                    alt="Tailwind CSS Navbar component"
+
+                                    src={user?.photoURL}
+                                />
+                            </div>
+                        </div>
+                        <ul
+                            tabIndex={0}
+                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow ">
+                            <li className='lg:hidden'><NavLink to={'/'}>Home</NavLink></li>
+                            <li className='lg:hidden'><NavLink to={'/all-groups'}>All Groups</NavLink></li>
+                            <li className='lg:hidden'><NavLink to={'/createGroup'}>Create Group</NavLink></li>
+                            <li className='lg:hidden'><NavLink to={'/my-group'}>My Groups (Private)</NavLink></li>
+                            <li><a className='' onClick={Logout}>Logout</a></li>
+                        </ul>
+                    </div>
+                </div> : <div><button className='btn btn-neutral btn-sm '><NavLink to={'/login'}>Login</NavLink></button></div>}
+
+                {/* <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
+                        </div> */}
+
             </div>
-            <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
-                    <li><a>Item 1</a></li>
-                    <li>
-                        <details>
-                            <summary>Parent</summary>
-                            <ul className="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
-                            </ul>
-                        </details>
-                    </li>
-                    <li><a>Item 3</a></li>
-                </ul>
-            </div>
-            <div className="navbar-end">
-                <NavLink to={'/productdetails'}>go here</NavLink>
-            </div>
-        </div>
+        </>
     );
 };
 
-export default NavBar;
+export default Navbar;

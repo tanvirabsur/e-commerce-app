@@ -1,6 +1,9 @@
 import axios from 'axios';
-import React from 'react';
+import React, { use } from 'react';
 import { FcGoogle } from "react-icons/fc";
+import { AuthContext } from '../authprovider/Authprovider';
+
+
 
 const handleLogin = (e) => {
     e.preventDefault()
@@ -16,7 +19,11 @@ const handleLogin = (e) => {
     console.log(formObject);
 }
 
+
 const Login = () => {
+    const {createUserWithGoogle} = use(AuthContext)
+
+    
     return (
         <div>
             <form onSubmit={handleLogin} className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 mx-auto">
@@ -31,7 +38,7 @@ const Login = () => {
             <button className="btn btn-neutral mt-4">Login</button>
             
         </form>
-            <button className="mx-auto block btn btn-active mt-4 w-xs"><FcGoogle className='mx-auto' size={25} /></button>
+            <button onClick={createUserWithGoogle} className="mx-auto block btn btn-active mt-4 w-xs"><FcGoogle className='mx-auto' size={25} /></button>
         </div>
         
         

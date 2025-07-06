@@ -4,7 +4,7 @@ import Login from "../Pages/Login";
 import AddProduct from "../Pages/AddProduct";
 import ProductDetails from "../Pages/ProductDetails";
 import Cart from "../Pages/Cart";
-
+import Regester from '../Pages/Regester'
 
 const router = createBrowserRouter([
     {
@@ -26,6 +26,10 @@ const router = createBrowserRouter([
             {
                 path: '/cart',
                 Component: Cart
+            },  
+            {
+                path: '/regester',
+                Component: Regester
             }  
                     
         ]

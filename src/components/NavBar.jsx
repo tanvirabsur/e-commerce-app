@@ -35,6 +35,7 @@ const Navbar = () => {
                     <ul className="menu menu-horizontal px-1">
                         <li><NavLink to={'/'}>Home</NavLink></li>
                         <li><NavLink to={'/productdetails'}>productdetails</NavLink></li>
+                        <li><NavLink to={'/products'}>All Products</NavLink></li>
                         <li><NavLink to={'/addproduct'}>Add product</NavLink></li>
                         <li><NavLink to={'/cart'}>Cart</NavLink></li>
                     </ul>
@@ -98,6 +99,7 @@ const Navbar = () => {
                             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow ">
                             <li className='lg:hidden'><NavLink to={'/'}>Home</NavLink></li>
                             <li className='lg:hidden'><NavLink to={'/productdetails'}>product details</NavLink></li>
+                            <li><NavLink to={'/products'}>All Products</NavLink></li>
                             <li className='lg:hidden'><NavLink to={'/addproduct'}>addproduct</NavLink></li>
                             <li className='lg:hidden'><NavLink to={'/cart'}>My Cart</NavLink></li>
                             <li><a className='' onClick={Logout}>Logout</a></li>

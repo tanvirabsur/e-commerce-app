@@ -5,6 +5,8 @@ import AddProduct from "../Pages/AddProduct";
 import ProductDetails from "../Pages/ProductDetails";
 import Cart from "../Pages/Cart";
 import Regester from '../Pages/Regester'
+import PrivateRoute from "../authprovider/PrivateRoute";
+import Products from "../components/Products";
 
 const router = createBrowserRouter([
     {
@@ -17,15 +19,25 @@ const router = createBrowserRouter([
             },
             {
                 path: '/addproduct',
-                Component: AddProduct
+                element: <PrivateRoute><AddProduct /></PrivateRoute>
             },
             {
                 path: '/productdetails',
-                Component: ProductDetails
+                element: <PrivateRoute><ProductDetails></ProductDetails></PrivateRoute>
             },
             {
                 path: '/cart',
                 Component: Cart
+            },
+            {
+                path: '/products',
+                loader: () => fetch('http://localhost:8080/products'),
+                Component: Products
+            },
+            {
+                path: '/product/:id',
+                loader: ({params}) => fetch(`http://localhost:8080/product/${params.id}`),
+                element: <PrivateRoute><ProductDetails></ProductDetails></PrivateRoute>
             },  
             {
                 path: '/regester',

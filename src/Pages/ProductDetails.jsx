@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLoaderData } from 'react-router';
 
 // Dummy user and product data for demonstration
 const user = {
@@ -6,22 +7,28 @@ const user = {
   email: 'john.doe@example.com',
 };
 
-const product = {
-  image: 'https://m.media-amazon.com/images/G/31/smartcommerce/blog/smartbiz/img_14.jpg',
-  name: 'Sample Product',
-  brand: 'BrandX',
-  category: 'Electronics & Gadgets',
-  mainQuantity: 100,
-  minimumSellingQuantity: 10,
-  price: 49.99,
-  rating: 4,
-  shortDescription: 'A high-quality product for your needs.',
-  content: 'This product is made from premium materials and is perfect for wholesale buyers. Enjoy bulk discounts and fast shipping.',
-};
+// const product = {
+//   image: 'https://m.media-amazon.com/images/G/31/smartcommerce/blog/smartbiz/img_14.jpg',
+//   name: 'Sample Product',
+//   brand: 'BrandX',
+//   category: 'Electronics & Gadgets',
+//   mainQuantity: 100,
+//   minimumSellingQuantity: 10,
+//   price: 49.99,
+//   rating: 4,
+//   shortDescription: 'A high-quality product for your needs.',
+//   content: 'This product is made from premium materials and is perfect for wholesale buyers. Enjoy bulk discounts and fast shipping.',
+// };
+
+
 
 const ProductDetails = () => {
+  const product = useLoaderData()
   const [showModal, setShowModal] = useState(false);
   const [quantity] = useState(product.minimumSellingQuantity);
+ 
+
+  console.log(product);
 
   return (
     <div className="min-h-screen bg-base-200 py-8">

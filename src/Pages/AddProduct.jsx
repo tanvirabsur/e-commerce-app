@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
@@ -26,7 +27,10 @@ const AddProduct = () => {
         // Add rating to form object
         formObject.rating = rating;
         
-        console.log('Product Details:', formObject);
+       
+        axios.post('http://localhost:8080/addproduct', formObject)
+        .then(res => console.log(res.data))
+        console.log('Product Details-client:', formObject);
         
         // TODO: Submit to database
         // You can add your database submission logic here

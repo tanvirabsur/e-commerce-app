@@ -1,0 +1,44 @@
+import React from 'react';
+
+const ProductCard = ({
+  image,
+  name,
+  brand,
+  category,
+  mainQuantity,
+  minimumBuyingQuantity,
+  price,
+  description,
+  actionLabel = 'Buy',
+  onAction = () => {},
+  children,
+}) => {
+  return (
+    <div className="card bg-white shadow-lg rounded-lg overflow-hidden">
+      <figure className="bg-base-100">
+        <img src={image} alt={name} className="h-48 w-full object-cover" />
+      </figure>
+      <div className="card-body p-6">
+        <h2 className="card-title text-xl font-bold mb-2">{name}</h2>
+        <div className="flex flex-wrap gap-2 text-sm text-gray-600 mb-2">
+          <span className="badge badge-outline">Brand: {brand}</span>
+          <span className="badge badge-outline">Category: {category}</span>
+        </div>
+        <div className="text-sm text-gray-500 mb-2">
+          <span className="mr-2">Main Qty: <span className="font-semibold">{mainQuantity}</span></span>
+          <span>Min. Buying Qty: <span className="font-semibold">{minimumBuyingQuantity}</span></span>
+        </div>
+        <p className="text-gray-700 mb-4">{description}</p>
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-lg font-semibold text-primary">${price?.toFixed(2)}</span>
+        </div>
+        <button className="btn btn-primary w-full" onClick={onAction}>
+          {actionLabel}
+        </button>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+export default ProductCard; 

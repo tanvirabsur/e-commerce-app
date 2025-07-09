@@ -19,7 +19,7 @@ const router = createBrowserRouter([
                 index: true,
                 loader: ()=> fetch(`https://assignment-11-server-six-sage.vercel.app/products`),
                 Component: Home,
-                // HydrateFallback: <Loading></Loading>
+               
             },
             {
                 path: '/login',

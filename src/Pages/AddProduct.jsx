@@ -1,14 +1,17 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { use } from 'react';
 import Swal from 'sweetalert2';
+import { AuthContext } from '../authprovider/Authprovider';
 
 const AddProduct = () => {
-    
-    const [rating, setRating] = useState(5);
 
+    const [rating, setRating] = useState(5);
+    const { user } = use(AuthContext)
+    console.log(user.accessToken);
     const categories = [
         "Electronics & Gadgets",
-        "Home & Kitchen Appliances", 
+        "Home & Kitchen Appliances",
         "Fashion & Apparel",
         "Industrial Machinery & Tools",
         "Health & Beauty",
@@ -16,59 +19,71 @@ const AddProduct = () => {
         "Office Supplies & Stationery"
     ];
 
-   
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form);
         const formObject = Object.fromEntries(formData.entries());
-        
+
         // Add rating to form object
         formObject.rating = rating;
-        
-       
-        axios.post('http://localhost:8080/addproduct', formObject)
-        .then(res => console.log(res.data))
+
+
+        axios.post(`http://localhost:8080/addproduct/${user?.email}?email=${user?.email}`,
+            formObject,
+
+            {
+                headers: {
+                    Authorization: `Bearer ${user?.accessToken}`
+                }
+            }
+        )
+            .then(res => {
+                if (res.data.acknowledged) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Product added successfully.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    form.reset();
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: res.data.message || 'Failed to add product.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
         console.log('Product Details-client:', formObject);
-        
-        // TODO: Submit to database
-        // You can add your database submission logic here
-        
-        // Reset form
-        form.reset();
         setRating(5);
-        
+
     };
 
-    const notify = ()=>{
-        Swal.fire({
-            title: "Drag me!",
-            icon: "success",
-            draggable: true
-          });
-    }
 
     return (
         <div className="min-h-screen bg-base-200 py-8">
             <div className="container mx-auto px-4">
                 <div className="max-w-2xl mx-auto">
                     <h1 className="text-3xl font-bold text-center mb-8">Add New Product</h1>
-                    
+
                     <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-6 space-y-6">
                         {/* Image Upload */}
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text font-semibold">Product Cover Image</span>
                             </label>
-                            <input 
-                                type="text" 
-                                className="file-input file-input-bordered w-full" 
-                                name="image" 
-                                
+                            <input
+                                type="text"
+                                className="file-input file-input-bordered w-full"
+                                name="image"
+
                                 required
                             />
-                            
+
                         </div>
 
                         {/* Product Name */}
@@ -76,10 +91,10 @@ const AddProduct = () => {
                             <label className="label">
                                 <span className="label-text font-semibold">Product Name</span>
                             </label>
-                            <input 
-                                type="text" 
-                                className="input input-bordered w-full" 
-                                name="name" 
+                            <input
+                                type="text"
+                                className="input input-bordered w-full"
+                                name="name"
                                 placeholder="Enter product name"
                                 required
                             />
@@ -91,10 +106,10 @@ const AddProduct = () => {
                                 <label className="label">
                                     <span className="label-text font-semibold">Main Quantity</span>
                                 </label>
-                                <input 
-                                    type="number" 
-                                    className="input input-bordered w-full" 
-                                    name="mainQuantity" 
+                                <input
+                                    type="number"
+                                    className="input input-bordered w-full"
+                                    name="mainQuantity"
                                     placeholder="Total available quantity"
                                     min="1"
                                     required
@@ -104,10 +119,10 @@ const AddProduct = () => {
                                 <label className="label">
                                     <span className="label-text font-semibold">Minimum Selling Quantity</span>
                                 </label>
-                                <input 
-                                    type="number" 
-                                    className="input input-bordered w-full" 
-                                    name="minimumSellingQuantity" 
+                                <input
+                                    type="number"
+                                    className="input input-bordered w-full"
+                                    name="minimumSellingQuantity"
                                     placeholder="Minimum order quantity"
                                     min="1"
                                     required
@@ -121,10 +136,10 @@ const AddProduct = () => {
                                 <label className="label">
                                     <span className="label-text font-semibold">Brand Name</span>
                                 </label>
-                                <input 
-                                    type="text" 
-                                    className="input input-bordered w-full" 
-                                    name="brandName" 
+                                <input
+                                    type="text"
+                                    className="input input-bordered w-full"
+                                    name="brandName"
                                     placeholder="Enter brand name"
                                     required
                                 />
@@ -133,8 +148,8 @@ const AddProduct = () => {
                                 <label className="label">
                                     <span className="label-text font-semibold">Category</span>
                                 </label>
-                                <select 
-                                    className="select select-bordered w-full" 
+                                <select
+                                    className="select select-bordered w-full"
                                     name="category"
                                     required
                                 >
@@ -153,9 +168,9 @@ const AddProduct = () => {
                             <label className="label">
                                 <span className="label-text font-semibold">Short Description</span>
                             </label>
-                            <textarea 
-                                className="textarea textarea-bordered w-full h-24" 
-                                name="shortDescription" 
+                            <textarea
+                                className="textarea textarea-bordered w-full h-24"
+                                name="shortDescription"
                                 placeholder="Brief description of the product"
                                 required
                             ></textarea>
@@ -169,10 +184,10 @@ const AddProduct = () => {
                                 </label>
                                 <div className="input-group">
                                     <span className="bg-base-300 px-3 flex items-center">$</span>
-                                    <input 
-                                        type="number" 
-                                        className="input input-bordered w-full" 
-                                        name="price" 
+                                    <input
+                                        type="number"
+                                        className="input input-bordered w-full"
+                                        name="price"
                                         placeholder="0.00"
                                         step="0.01"
                                         min="0"
@@ -202,7 +217,7 @@ const AddProduct = () => {
 
                         {/* Submit Button */}
                         <div className="form-control pt-4">
-                            <button  onClick={notify} type="submit" className="btn btn-primary w-full">
+                            <button type="submit" className="btn btn-primary w-full">
                                 Add Product
                             </button>
                         </div>
@@ -213,7 +228,7 @@ const AddProduct = () => {
                         <h2 className="text-xl font-bold mb-4">Product Information</h2>
                         <div className="prose max-w-none">
                             <p className="text-gray-700 mb-4">
-                                Welcome to our wholesale platform! This form allows you to add new products to our marketplace. 
+                                Welcome to our wholesale platform! This form allows you to add new products to our marketplace.
                                 Please ensure all information is accurate and complete before submission.
                             </p>
                             <div className="bg-blue-50 p-4 rounded-lg">

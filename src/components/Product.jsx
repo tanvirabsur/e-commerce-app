@@ -2,7 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router';
 
 const Product = ({product}) => {
-    const {image, name, brand, category, mainQuantity, minimumBuyingQuantity, price, description,_id} = product
+    const {image, name, brand, category, mainQuantity, minimumBuyingQuantity, price,description,_id} = product
+    // , 
     return (
         <div className="card bg-white shadow-lg rounded-lg overflow-hidden">
       <figure className="bg-base-100">
@@ -10,9 +11,9 @@ const Product = ({product}) => {
       </figure>
       <div className="card-body p-6">
         <h2 className="card-title text-xl font-bold mb-2">{name}</h2>
-        <div className="flex flex-wrap gap-2 text-sm text-gray-600 mb-2">
-          <span className="badge badge-outline">Brand: {brand}</span>
-          <span className="badge badge-outline">Category: {category}</span>
+        <div className="flex flex-wrap gap-2  text-gray-600 mb-2">
+          <span className="">Brand: {brand}</span>
+          <span className="">Category: {category}</span>
         </div>
         <div className="text-sm text-gray-500 mb-2">
           <span className="mr-2">Main Qty: <span className="font-semibold">{mainQuantity}</span></span>
@@ -20,7 +21,7 @@ const Product = ({product}) => {
         </div>
         <p className="text-gray-700 mb-4">{description}</p>
         <div className="flex items-center justify-between mb-4">
-          <span className="text-lg font-semibold text-primary">${price?.toFixed(2)}</span>
+          <span className="text-lg font-semibold text-primary">${price}</span>
         </div>
         <NavLink to={`/product/${_id}`}>
         <button className="btn btn-primary w-full">

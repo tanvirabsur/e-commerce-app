@@ -1,34 +1,70 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { useLoaderData } from 'react-router';
-
-// Dummy user and product data for demonstration
-const user = {
-  displayName: 'John Doe',
-  email: 'john.doe@example.com',
-};
-
-// const product = {
-//   image: 'https://m.media-amazon.com/images/G/31/smartcommerce/blog/smartbiz/img_14.jpg',
-//   name: 'Sample Product',
-//   brand: 'BrandX',
-//   category: 'Electronics & Gadgets',
-//   mainQuantity: 100,
-//   minimumSellingQuantity: 10,
-//   price: 49.99,
-//   rating: 4,
-//   shortDescription: 'A high-quality product for your needs.',
-//   content: 'This product is made from premium materials and is perfect for wholesale buyers. Enjoy bulk discounts and fast shipping.',
-// };
+import { AuthContext } from '../authprovider/Authprovider';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 
 
 const ProductDetails = () => {
   const product = useLoaderData()
+  const { user } = use(AuthContext)
+  const minQty = Number(product.minimumSellingQuantity) || 1;
   const [showModal, setShowModal] = useState(false);
-  const [quantity] = useState(product.minimumSellingQuantity);
- 
+  const [quantity, setQuantity] = useState(minQty);
 
-  console.log(product);
+
+  const handleIncrease = () => setQuantity(q => q + 1);
+  const handleDecrease = () => setQuantity(q => Math.max(minQty, q - 1));
+
+  const handleOrdeer = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const formObject = Object.fromEntries(formData.entries());
+
+    const orderDetails = {
+      customerName: formObject.customerName,
+      customerEmail: formObject.customerEmail,
+      quantity: Number(formObject.quantity),
+      shippingAddress: formObject.shippingAddress,
+      shippingAddress2: formObject.shippingAddress2,
+      phoneNumber: formObject.phoneNumber,
+      productId: product._id,
+      productName: product.name,
+      productImage: product.image,
+      productPrice: product.price,
+      totalPrice: product.price * Number(formObject.quantity),
+      orderStatus: 'pending',
+      orderDate: new Date().toISOString(),
+      rating: product.rating,
+    }
+    axios.post(`http://localhost:8080/addorder/${user?.email}?email=${user?.email}`, orderDetails,
+      {
+        headers: {
+          Authorization: `Bearer ${user?.accessToken}`
+        }
+      }
+    ).then(res => {
+
+      if (res.data.acknowledged) {
+        Swal.fire({
+          title: 'Success!',
+          text: 'order recived successfully.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+        form.reset();
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: res.data.message || 'Failed to failed to recive order.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    })
+  }
 
   return (
     <div className="min-h-screen bg-base-200 py-8">
@@ -49,9 +85,9 @@ const ProductDetails = () => {
                 <span className="badge badge-outline">Min. Order: {product.minimumSellingQuantity}</span>
               </div>
               <div className="flex items-center gap-2 mt-2">
-                <span className="text-2xl font-semibold text-primary">${product.price.toFixed(2)}</span>
+                <span className="text-2xl font-semibold text-primary">${product.price}</span>
                 <span className="ml-4 flex items-center">
-                  {[1,2,3,4,5].map((star) => (
+                  {[1, 2, 3, 4, 5].map((star) => (
                     <span key={star} className={`text-xl ${star <= product.rating ? 'text-yellow-400' : 'text-gray-300'}`}>★</span>
                   ))}
                   <span className="ml-2 text-gray-500">({product.rating}/5)</span>
@@ -81,7 +117,7 @@ const ProductDetails = () => {
               onClick={() => setShowModal(false)}
             >✕</button>
             <h2 className="text-2xl font-bold mb-4 text-center">Checkout</h2>
-            <form className="space-y-4">
+            <form onSubmit={handleOrdeer} className="space-y-4">
               <div className="form-control">
                 <label className="label">
                   <span className="label-text font-semibold">Name</span>
@@ -90,6 +126,7 @@ const ProductDetails = () => {
                   type="text"
                   className="input input-bordered w-full"
                   value={user.displayName}
+                  name='customerName'
                   disabled
                 />
               </div>
@@ -101,6 +138,7 @@ const ProductDetails = () => {
                   type="email"
                   className="input input-bordered w-full"
                   value={user.email}
+                  name='customerEmail'
                   disabled
                 />
               </div>
@@ -112,7 +150,7 @@ const ProductDetails = () => {
                   <button
                     type="button"
                     className="btn btn-outline btn-circle text-lg"
-                    // onClick={() => setQuantity(q => Math.max(product.minimumSellingQuantity, q - 1))}
+                    onClick={handleDecrease}
                   >
                     -
                   </button>
@@ -120,13 +158,15 @@ const ProductDetails = () => {
                     type="number"
                     className="input input-bordered w-20 text-center"
                     value={quantity}
+                    name='quantity'
                     min={product.minimumSellingQuantity}
                     readOnly
+
                   />
                   <button
                     type="button"
                     className="btn btn-outline btn-circle text-lg"
-                    // onClick={() => setQuantity(q => q + 1)}
+                    onClick={handleIncrease}
                   >
                     +
                   </button>
@@ -141,6 +181,16 @@ const ProductDetails = () => {
                   type="text"
                   className="input input-bordered w-full"
                   placeholder="Enter your shipping address"
+                  name='shippingAddress'
+                />
+                <label className="label mt-3">
+                  <span className="label-text font-semibold">Shipping Address</span>
+                </label>
+                <input
+                  type="text"
+                  className="input input-bordered w-full"
+                  placeholder="Enter your shipping address"
+                  name='shippingAddress2'
                 />
               </div>
               <div className="form-control">
@@ -151,9 +201,10 @@ const ProductDetails = () => {
                   type="tel"
                   className="input input-bordered w-full"
                   placeholder="Enter your phone number"
+                  name='phoneNumber'
                 />
               </div>
-              <button type="button" className="btn btn-primary w-full mt-4">
+              <button type='submit' className="btn btn-primary w-full mt-4">
                 Place Order
               </button>
             </form>

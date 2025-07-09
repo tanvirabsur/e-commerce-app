@@ -13,13 +13,12 @@ for (let item of products) {
     uniqueByCategory.push(item);
     seenCategories.add(item.category);
   }
-  if (uniqueByCategory.length === 8) break;
+  if (uniqueByCategory.length === 7) break;
 }
 
-console.log(uniqueByCategory);
     return (
        <>
-       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-8'>
+       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 p-2  mx-auto'>
        {
         uniqueByCategory.map(product => <Product key={product._id} product={product}></Product>)
        }

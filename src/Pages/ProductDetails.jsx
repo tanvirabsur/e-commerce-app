@@ -14,6 +14,7 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(minQty);
 
 
+
   const handleIncrease = () => setQuantity(q => q + 1);
   const handleDecrease = () => setQuantity(q => Math.max(minQty, q - 1));
 
@@ -24,8 +25,8 @@ const ProductDetails = () => {
     const formObject = Object.fromEntries(formData.entries());
 
     const orderDetails = {
-      customerName: formObject.customerName,
-      customerEmail: formObject.customerEmail,
+      customerName: user.displayName,
+      customerEmail: user.email,
       quantity: Number(formObject.quantity),
       shippingAddress: formObject.shippingAddress,
       shippingAddress2: formObject.shippingAddress2,
@@ -37,9 +38,12 @@ const ProductDetails = () => {
       totalPrice: product.price * Number(formObject.quantity),
       orderStatus: 'pending',
       orderDate: new Date().toISOString(),
+      productBrand: product.brand,
+      productCategory: product.category,
+      productDescription: product.shortDescription,
       rating: product.rating,
     }
-    axios.post(`http://localhost:8080/addorder/${user?.email}?email=${user?.email}`, orderDetails,
+    axios.post(`http://localhost:8080/addorder`, orderDetails,
       {
         headers: {
           Authorization: `Bearer ${user?.accessToken}`

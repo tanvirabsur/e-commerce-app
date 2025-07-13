@@ -10,7 +10,10 @@ import Products from "../components/Products";
 import RootLayOut from "../Pages/RootLayOut";
 import Loading from "../components/Loading";
 
+
 const router = createBrowserRouter([
+
+    
     {
         path: "/",
         Component: RootLayOut,
@@ -35,6 +38,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/cart',
+                loader: ()=> fetch('https://assignment-11-server-six-sage.vercel.app/myorder' ),
                 Component: Cart
             },
             {

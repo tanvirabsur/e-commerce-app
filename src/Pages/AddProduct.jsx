@@ -8,7 +8,7 @@ const AddProduct = () => {
 
     const [rating, setRating] = useState(5);
     const { user } = use(AuthContext)
-    console.log(user.accessToken);
+   
     const categories = [
         "Electronics & Gadgets",
         "Home & Kitchen Appliances",
@@ -31,9 +31,7 @@ const AddProduct = () => {
         formObject.rating = rating;
 
 
-        axios.post(`http://localhost:8080/addproduct/${user?.email}?email=${user?.email}`,
-            formObject,
-
+        axios.post(`https://assignment-11-server-six-sage.vercel.app/addproduct`, formObject,
             {
                 headers: {
                     Authorization: `Bearer ${user?.accessToken}`

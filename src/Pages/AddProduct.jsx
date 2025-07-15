@@ -4,6 +4,7 @@ import { use } from 'react';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../authprovider/Authprovider';
 
+
 const AddProduct = () => {
 
     const [rating, setRating] = useState(5);
@@ -27,11 +28,24 @@ const AddProduct = () => {
         const formData = new FormData(form);
         const formObject = Object.fromEntries(formData.entries());
 
+        const product = {
+            image: formObject.image,
+            name: formObject.name,
+            mainQuantity: Number(formObject.mainQuantity),
+            minimumSellingQuantity: Number(formObject.minimumSellingQuantity),
+            brand: formObject.brandName,
+            category: formObject.category,
+            shortDescription: formObject.shortDescription,
+            price: Number(formObject.price),
+            authorName: user?.displayName,
+            author: user?.email,
+        }
+
         // Add rating to form object
         formObject.rating = rating;
 
 
-        axios.post(`https://assignment-11-server-six-sage.vercel.app/addproduct`, formObject,
+        axios.post(`https://assignment-11-server-six-sage.vercel.app/addproduct`, product,
             {
                 headers: {
                     Authorization: `Bearer ${user?.accessToken}`

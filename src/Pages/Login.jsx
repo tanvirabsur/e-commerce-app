@@ -52,7 +52,21 @@ const Login = () => {
                 <p className="text-center mt-4">Don't have an account? <NavLink to={'/regester'} className={'text-purple-500'}>Regester</NavLink></p>
 
             </form>
-            <button onClick={createUserWithGoogle} className="mx-auto block btn btn-active mb-5 mt-4 w-xs"><FcGoogle className='mx-auto' size={25} /></button>
+            <button onClick={()=>{
+                createUserWithGoogle()
+                    .then(() => {
+                        navigate('/')
+                    })
+                    .catch((error) => {
+                        console.error('Google login failed:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Google login failed. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+            }} className="mx-auto block btn btn-active mb-5 mt-4 w-xs"><FcGoogle className='mx-auto' size={25} /></button>
         </div>
 
 

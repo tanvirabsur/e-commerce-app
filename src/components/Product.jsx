@@ -2,8 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router';
 
 const Product = ({product}) => {
-    const {image, name, brand, category, mainQuantity, minimumBuyingQuantity, price,description,_id} = product
-    // , 
+    const {image, name, brand, category, maxQuantity, price,description,_id,minQuantity} = product
+    // console.log(minQuantity, product );
     return (
         <div className="card bg-white shadow-lg rounded-lg overflow-hidden">
       <figure className="bg-base-100">
@@ -16,8 +16,8 @@ const Product = ({product}) => {
           <span className="">Category: {category}</span>
         </div>
         <div className="text-sm text-gray-500 mb-2">
-          <span className="mr-2">Main Qty: <span className="font-semibold">{mainQuantity}</span></span>
-          <span>Min. Buying Qty: <span className="font-semibold">{minimumBuyingQuantity}</span></span>
+          <span className="mr-2">Main Qty: <span className="font-semibold">{minQuantity}</span></span>
+          <span>Min. Buying Qty: <span className="font-semibold">{maxQuantity}</span></span>
         </div>
         <p className="text-gray-700 mb-4">{description}</p>
         <div className="flex items-center justify-between mb-4">

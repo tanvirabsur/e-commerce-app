@@ -4,7 +4,7 @@ import React from 'react';
 
 const Orders = ({product,handleDelete}) => {
 
-    const {productName, totalPrice, productDescription,quantity,productImage, _id} = product;
+    const {productName, totalPrice, productDescription,quantity,productImage, _id,productBrand,productCategory,orderTimeText} = product;
    
     return (
          <div  className="card bg-white shadow-lg rounded-lg overflow-hidden">
@@ -14,13 +14,13 @@ const Orders = ({product,handleDelete}) => {
               <div className="card-body p-6">
                 <h2 className="card-title text-xl font-bold mb-2">{productName}</h2>
                 <div className="flex flex-wrap gap-2 text-sm text-gray-600 mb-2">
-                  <span className="badge badge-outline">Brand: {}</span>
-                  <span className="badge badge-outline">Category: {}</span>
+                  <span className="badge badge-outline">Brand: {productBrand}</span>
+                  <span className="badge badge-outline">Category: {productCategory}</span>
                 </div>
                 <div className="text-sm text-gray-500 mb-2">
-                  <span className="mr-2">Buying Date: <span className="font-semibold">{}</span></span>
-                  <span className="mr-2">Min. Buying Qty: <span className="font-semibold">{}</span></span>
-                  <span>Main Qty: <span className="font-semibold"></span></span>
+                  <span className="mr-2">Buying Date: <span className="font-semibold">{orderTimeText}</span></span>
+                  
+                  
                 </div>
                 <div className="text-sm text-gray-500 mb-2">
                   <span>Bought Qty: <span className="font-semibold">{quantity}</span></span>

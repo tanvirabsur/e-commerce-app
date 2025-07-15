@@ -55,7 +55,7 @@ const navigate = useNavigate();
       {cetagorys.map((category) => (
       //  <NavLink>
          <div
-          
+          key={category}
           onClick={() => handleCategoryClick(category)}
           className="cursor-pointer bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden"
         >

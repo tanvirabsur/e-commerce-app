@@ -25,10 +25,12 @@ const Cart = () => {
     try {
       // Call your API to delete the order
       await axios.delete(`https://assignment-11-server-six-sage.vercel.app/deleteorder/${id}`)
+      
       .then(res => {
-        setAllorders(prev => prev.filter(order => order._id !== id));
-        if(res.data.deletedCount > 0){
-          
+        console.log(res.data);
+        
+        if(res.data.success){
+          setAllorders(prev => prev.filter(order => order._id !== id));
           Swal.fire({
             title: 'Success!',
             text: 'Order deleted successfully.',
@@ -36,6 +38,7 @@ const Cart = () => {
             confirmButtonText: 'OK'
           });
         }
+        
       })
       // Remove from state for real-time update
       

@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import { auth } from '../Firebase/firebase';
-import axios from 'axios';
+
 
 
 const AuthContext = createContext()
@@ -37,19 +37,19 @@ const Authprovider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             setUser(user)
-            if(user){
-                try {
-                    const token = await user.getIdToken();
+            // if(user){
+            //     try {
+            //         const token = await user.getIdToken();
                     
-                     await axios.get('http://localhost:8080/jwt', {}, {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    })
-                } catch (error) {
-                    console.log('Error fetching user data:', error);
-                }
-            }
+            //          await axios.get('http://localhost:8080/jwt', {}, {
+            //             headers: {
+            //                 Authorization: `Bearer ${token}`
+            //             }
+            //         })
+            //     } catch (error) {
+            //         console.log('Error fetching user data:', error);
+            //     }
+            // }
             setLoading(false)
         })
         return () => {

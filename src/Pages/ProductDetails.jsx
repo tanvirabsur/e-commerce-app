@@ -8,12 +8,11 @@ import Swal from 'sweetalert2';
 
 const ProductDetails = () => {
   const product = useLoaderData()
+
   const { user } = use(AuthContext)
-  const minQty = Number(product.minimumSellingQuantity) || 1;
+  const minQty = Number(product.minQuantity) || 1;
   const [showModal, setShowModal] = useState(false);
   const [quantity, setQuantity] = useState(minQty);
-
-
 
   const handleIncrease = () => setQuantity(q => q + 1);
   const handleDecrease = () => setQuantity(q => Math.max(minQty, q - 1));
@@ -23,6 +22,21 @@ const ProductDetails = () => {
     const form = e.target;
     const formData = new FormData(form);
     const formObject = Object.fromEntries(formData.entries());
+    const now = new Date();
+    const bdTime = new Date(now.getTime() + (6 * 60 * 60 * 1000));
+
+    const orderISOTime = bdTime.toISOString();
+
+    // Readable format (for UI or history view)
+    const formattedOrderTime = bdTime.toLocaleString('en-BD', {
+      timeZone: 'Asia/Dhaka',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
 
     const orderDetails = {
       customerName: user.displayName,
@@ -42,32 +56,53 @@ const ProductDetails = () => {
       productCategory: product.category,
       productDescription: product.shortDescription,
       rating: product.rating,
+      orderdate: orderISOTime,                 // ✅ ISO format (BD time)
+      orderTimeText: formattedOrderTime,
     }
-    axios.post(`https://assignment-11-server-six-sage.vercel.app/addorder`, orderDetails,
-      {
-        headers: {
-          Authorization: `Bearer ${user?.accessToken}`
-        }
-      }
-    ).then(res => {
 
-      if (res.data.acknowledged) {
-        Swal.fire({
-          title: 'Success!',
-          text: 'order recived successfully.',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        });
-        form.reset();
-      } else {
-        Swal.fire({
-          title: 'Error!',
-          text: res.data.message || 'Failed to failed to recive order.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-      }
-    })
+    if (product.minQuantity > formObject.quantity) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Insufficient stock',
+        text: `Only ${product.mainQuantity} items available.`,
+      });
+      return;
+    } else if (formObject.quantity > product.maxQuantity) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Minimum order quantity not met',
+        text: `You can maximum order ${product.maxQuantity} items.`,
+      });
+      return;
+    } else {
+      axios.post(`https://assignment-11-server-six-sage.vercel.app/addorder`, orderDetails,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.accessToken}`
+          }
+        }
+      ).then(res => {
+
+        if (res.data.acknowledged) {
+          Swal.fire({
+            title: 'Success!',
+            text: 'order recived successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          });
+          form.reset();
+        } else {
+          Swal.fire({
+            title: 'Error!',
+            text: res.data.message || 'Failed to failed to recive order.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        }
+      })
+    }
+
+
   }
 
   return (
@@ -85,8 +120,8 @@ const ProductDetails = () => {
               <div className="flex flex-wrap gap-2 text-sm text-gray-600">
                 <span className="badge badge-outline">Brand: {product.brand}</span>
                 <span className="badge badge-outline">Category: {product.category}</span>
-                <span className="badge badge-outline">Available: {product.mainQuantity}</span>
-                <span className="badge badge-outline">Min. Order: {product.minimumSellingQuantity}</span>
+                <span className="badge badge-outline">Available: {product.maxQuantity}</span>
+                <span className="badge badge-outline">Min. Order: {product.minQuantity}</span>
               </div>
               <div className="flex items-center gap-2 mt-2">
                 <span className="text-2xl font-semibold text-primary">${product.price}</span>
@@ -114,8 +149,8 @@ const ProductDetails = () => {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-40 backdrop-blur-sm">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+        <div className="fixed inset-0 z-50 flex h-full items-center justify-center bg-opacity-40 backdrop-blur-sm ">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-md h-[99%] p-3 relative">
             <button
               className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
               onClick={() => setShowModal(false)}
@@ -187,7 +222,7 @@ const ProductDetails = () => {
                   placeholder="Enter your shipping address"
                   name='shippingAddress'
                 />
-                <label className="label mt-3">
+                {/* <label className="label mt-1">
                   <span className="label-text font-semibold">Shipping Address</span>
                 </label>
                 <input
@@ -195,7 +230,7 @@ const ProductDetails = () => {
                   className="input input-bordered w-full"
                   placeholder="Enter your shipping address"
                   name='shippingAddress2'
-                />
+                /> */}
               </div>
               <div className="form-control">
                 <label className="label">
@@ -208,7 +243,7 @@ const ProductDetails = () => {
                   name='phoneNumber'
                 />
               </div>
-              <button type='submit' className="btn btn-primary w-full mt-4">
+              <button type='submit' className="btn btn-primary w-full mt-1">
                 Place Order
               </button>
             </form>

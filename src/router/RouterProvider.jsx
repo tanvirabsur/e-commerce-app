@@ -10,6 +10,7 @@ import Products from "../components/Products";
 import RootLayOut from "../Pages/RootLayOut";
 import Loading from "../components/Loading";
 import CetagoryProducts from "../components/CetagoryProducts";
+import Myproducts from "../components/Myproducts";
 
 
 const router = createBrowserRouter([
@@ -59,7 +60,12 @@ const router = createBrowserRouter([
             {
                 path: '/regester',
                 Component: Regester
-            }  
+            },
+            {
+                path: '/myproducts',
+                loader: () => fetch('https://assignment-11-server-six-sage.vercel.app/products'),
+                element: <PrivateRoute><Myproducts></Myproducts></PrivateRoute>
+            }
                     
         ]
     }

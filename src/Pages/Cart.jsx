@@ -26,9 +26,9 @@ const Cart = () => {
       // Call your API to delete the order
       await axios.delete(`https://assignment-11-server-six-sage.vercel.app/deleteorder/${id}`)
       .then(res => {
-        console.log(res.data);
         setAllorders(prev => prev.filter(order => order._id !== id));
         if(res.data.deletedCount > 0){
+          
           Swal.fire({
             title: 'Success!',
             text: 'Order deleted successfully.',

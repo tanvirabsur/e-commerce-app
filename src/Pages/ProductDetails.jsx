@@ -43,7 +43,7 @@ const ProductDetails = () => {
       productDescription: product.shortDescription,
       rating: product.rating,
     }
-    axios.post(`http://localhost:8080/addorder`, orderDetails,
+    axios.post(`https://assignment-11-server-six-sage.vercel.app/addorder`, orderDetails,
       {
         headers: {
           Authorization: `Bearer ${user?.accessToken}`

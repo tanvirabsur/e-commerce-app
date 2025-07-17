@@ -23,6 +23,7 @@ for (let item of products) {
 
     return (
        <>
+       <title>Home</title>
        <Slider></Slider>
 
         <h1 className='text-3xl text-center font-bold my-4'>Featured Products</h1>

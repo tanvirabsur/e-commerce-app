@@ -11,6 +11,9 @@ import RootLayOut from "../Pages/RootLayOut";
 import Loading from "../components/Loading";
 import CetagoryProducts from "../components/CetagoryProducts";
 import Myproducts from "../components/Myproducts";
+import Error from "../components/Error";
+import UpdateProduct from "../Pages/UpdateProduct";
+import Delete from "../components/Delete";
 
 
 const router = createBrowserRouter([
@@ -65,6 +68,18 @@ const router = createBrowserRouter([
                 path: '/myproducts',
                 loader: () => fetch('https://assignment-11-server-six-sage.vercel.app/products'),
                 element: <PrivateRoute><Myproducts></Myproducts></PrivateRoute>
+            },
+            {
+                path: '*',
+                Component: Error
+            },
+            {
+                path: '/update/:id',
+                Component: UpdateProduct
+            },
+            {
+                path: '/delete',
+                Component: Delete
             }
                     
         ]

@@ -75,14 +75,15 @@ const ProductDetails = () => {
       });
       return;
     } else {
-      axios.post(`https://assignment-11-server-six-sage.vercel.app/addorder`, orderDetails,
+      // https://assignment-11-server-six-sage.vercel.app
+      axios.post(`http://localhost:8080/addorder`, orderDetails,
         {
           headers: {
             Authorization: `Bearer ${user?.accessToken}`
           }
         }
       ).then(res => {
-
+        console.log(res.data)
         if (res.data.acknowledged) {
           Swal.fire({
             title: 'Success!',
@@ -112,11 +113,11 @@ const ProductDetails = () => {
           <div className="flex flex-col md:flex-row gap-8">
             <img
               src={product.image}
-              alt={product.name}
+              alt={product.productName}
               className="w-full md:w-80 h-56 object-cover rounded-lg border"
             />
             <div className="flex-1 space-y-3">
-              <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+              <h1 className="text-3xl font-bold mb-2">{product.productName}</h1>
               <div className="flex flex-wrap gap-2 text-sm text-gray-600">
                 <span className="badge badge-outline">Brand: {product.brand}</span>
                 <span className="badge badge-outline">Category: {product.category}</span>
@@ -132,7 +133,7 @@ const ProductDetails = () => {
                   <span className="ml-2 text-gray-500">({product.rating}/5)</span>
                 </span>
               </div>
-              <p className="text-gray-700 mt-4">{product.shortDescription}</p>
+              <p className="text-gray-700 mt-4">{product.description}</p>
               <div className="prose max-w-none mt-2">
                 <p>{product.content}</p>
               </div>
@@ -198,7 +199,7 @@ const ProductDetails = () => {
                     className="input input-bordered w-20 text-center"
                     value={quantity}
                     name='quantity'
-                    min={product.minimumSellingQuantity}
+                    min={product.minQuantity}
                     readOnly
 
                   />
@@ -210,7 +211,7 @@ const ProductDetails = () => {
                     +
                   </button>
                 </div>
-                <span className="text-xs text-gray-500 mt-1">Minimum order: {product.minimumSellingQuantity}</span>
+                <span className="text-xs text-gray-500 mt-1">Minimum order: {product.minQuantity}</span>
               </div>
               <div className="form-control">
                 <label className="label">

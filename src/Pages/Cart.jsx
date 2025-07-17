@@ -21,10 +21,11 @@ const Cart = () => {
   }, [orders, user]);
 
   
-  const handleDelete = async (id)=>{
+  const handleDelete = async (id,quantity)=>{
     try {
       // Call your API to delete the order
-      await axios.delete(`https://assignment-11-server-six-sage.vercel.app/deleteorder/${id}`)
+      // productId=${productId}
+      await axios.delete(`http://localhost:8080/deleteorder/${id}?quantity=${quantity}&productId=${id}`)
       
       .then(res => {
         console.log(res.data);
@@ -51,6 +52,7 @@ const Cart = () => {
   if (allorders.length === 0) {
     return (
       <div className="min-h-screen bg-base-200 py-8">
+        <title>cart</title>
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold text-center mb-8">My Cart</h1>
           <p className="text-center text-gray-500">Your cart is empty.</p>
@@ -60,7 +62,10 @@ const Cart = () => {
 
   } else {
     return (
+      <>
+      <title>cart</title>
       <div className="min-h-screen bg-base-200 py-8">
+        
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold text-center mb-8">My Cart</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -70,6 +75,8 @@ const Cart = () => {
           </div>
         </div>
       </div>
+      
+      </>
     );
   }
 

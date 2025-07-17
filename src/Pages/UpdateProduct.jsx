@@ -1,15 +1,19 @@
 import axios from 'axios';
-import React, { useState } from 'react';
-import { use } from 'react';
+import React, { useState, use, useEffect } from 'react';
+
 import Swal from 'sweetalert2';
 import { AuthContext } from '../authprovider/Authprovider';
+import { useParams } from 'react-router';
 
 
-const AddProduct = () => {
+const UpdateProduct = () => {
+   
 
     const [rating, setRating] = useState(5);
     const { user } = use(AuthContext)
-   
+    const { id } = useParams();
+    const [product, setProduct] = useState(null);
+
     const categories = [
         "Electronics & Gadgets",
         "Home & Kitchen Appliances",
@@ -20,7 +24,24 @@ const AddProduct = () => {
         "Office Supplies & Stationery"
     ];
 
+    useEffect(() => {
+        axios.get(`https://assignment-11-server-six-sage.vercel.app/product/${id}`)
+            .then(res => {
+                setProduct(res.data);
+                setRating(res.data.rating || 5);
+            })
+            .catch(error => {
+                console.error("Failed to fetch product:", error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to fetch product details.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+    }, [id]);
 
+console.log(product);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -28,24 +49,22 @@ const AddProduct = () => {
         const formData = new FormData(form);
         const formObject = Object.fromEntries(formData.entries());
 
-        const product = {
+        const updatedProduct = {
             image: formObject.image,
-            productName: formObject.name,
-            minQuantity: Number(formObject.mainQuantity),
-            maxQuantity: Number(formObject.minimumSellingQuantity),
+            name: formObject.name,
+            mainQuantity: Number(formObject.mainQuantity),
+            minimumSellingQuantity: Number(formObject.minimumSellingQuantity),
             brand: formObject.brandName,
             category: formObject.category,
-            description: formObject.shortDescription,
+            shortDescription: formObject.shortDescription,
             price: Number(formObject.price),
+            rating: rating,
             authorName: user?.displayName,
             author: user?.email,
         }
 
-        // Add rating to form object
-        formObject.rating = rating;
 
-
-        axios.post(`https://assignment-11-server-six-sage.vercel.app/addproduct`, product,
+        axios.patch(`https://assignment-11-server-six-sage.vercel.app/update/${id}`, updatedProduct,
             {
                 headers: {
                     Authorization: `Bearer ${user?.accessToken}`
@@ -53,35 +72,38 @@ const AddProduct = () => {
             }
         )
             .then(res => {
+                console.log(res.data);
                 if (res.data.acknowledged) {
                     Swal.fire({
                         title: 'Success!',
-                        text: 'Product added successfully.',
+                        text: 'Product updated successfully.',
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
-                    form.reset();
                 } else {
                     Swal.fire({
                         title: 'Error!',
-                        text: res.data.message || 'Failed to add product.',
+                        text: res.data.message || 'Failed to update product.',
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
                 }
             })
-        console.log('Product Details-client:', formObject);
-        setRating(5);
+        console.log('Product Details-client:', updatedProduct);
 
     };
 
 
+    if (!product) {
+        return <div>Loading...</div>;
+    }
+
+
     return (
         <div className="min-h-screen bg-base-200 py-8">
-                         <title>Add product</title>
             <div className="container mx-auto px-4">
                 <div className="max-w-2xl mx-auto">
-                    <h1 className="text-3xl font-bold text-center mb-8">Add New Product</h1>
+                    <h1 className="text-3xl font-bold text-center mb-8">Update Product</h1>
 
                     <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-6 space-y-6">
                         {/* Image Upload */}
@@ -93,7 +115,7 @@ const AddProduct = () => {
                                 type="text"
                                 className="file-input file-input-bordered w-full"
                                 name="image"
-
+                                defaultValue={product.image}
                                 required
                             />
 
@@ -108,6 +130,7 @@ const AddProduct = () => {
                                 type="text"
                                 className="input input-bordered w-full"
                                 name="productName"
+                                defaultValue={product.productName}
                                 placeholder="Enter product name"
                                 required
                             />
@@ -123,6 +146,7 @@ const AddProduct = () => {
                                     type="number"
                                     className="input input-bordered w-full"
                                     name="maxQuantity"
+                                    defaultValue={product.maxQuantity}
                                     placeholder="Total available quantity"
                                     min="1"
                                     required
@@ -136,6 +160,7 @@ const AddProduct = () => {
                                     type="number"
                                     className="input input-bordered w-full"
                                     name="minQuantity"
+                                    defaultValue={product.minQuantity}
                                     placeholder="Minimum order quantity"
                                     min="1"
                                     required
@@ -153,6 +178,7 @@ const AddProduct = () => {
                                     type="text"
                                     className="input input-bordered w-full"
                                     name="brand"
+                                    defaultValue={product.brand}
                                     placeholder="Enter brand name"
                                     required
                                 />
@@ -164,6 +190,7 @@ const AddProduct = () => {
                                 <select
                                     className="select select-bordered w-full"
                                     name="category"
+                                    defaultValue={product.category}
                                     required
                                 >
                                     <option value="">Select a category</option>
@@ -184,6 +211,7 @@ const AddProduct = () => {
                             <textarea
                                 className="textarea textarea-bordered w-full h-24"
                                 name="description"
+                                defaultValue={product.description}
                                 placeholder="Brief description of the product"
                                 required
                             ></textarea>
@@ -201,6 +229,8 @@ const AddProduct = () => {
                                         type="number"
                                         className="input input-bordered w-full"
                                         name="price"
+                                        defaultValue={product.price}
+                                        
                                         placeholder="0.00"
                                         step="0.01"
                                         min="0"
@@ -231,35 +261,14 @@ const AddProduct = () => {
                         {/* Submit Button */}
                         <div className="form-control pt-4">
                             <button type="submit" className="btn btn-primary w-full">
-                                Add Product
+                                Update Product
                             </button>
                         </div>
                     </form>
-
-                    {/* Product Content Section */}
-                    <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
-                        <h2 className="text-xl font-bold mb-4">Product Information</h2>
-                        <div className="prose max-w-none">
-                            <p className="text-gray-700 mb-4">
-                                Welcome to our wholesale platform! This form allows you to add new products to our marketplace.
-                                Please ensure all information is accurate and complete before submission.
-                            </p>
-                            <div className="bg-blue-50 p-4 rounded-lg">
-                                <h3 className="font-semibold text-blue-800 mb-2">Important Notes:</h3>
-                                <ul className="text-blue-700 space-y-1 text-sm">
-                                    <li>• Minimum selling quantity is the smallest order size customers can place</li>
-                                    <li>• Product images should be high quality and clearly show the product</li>
-                                    <li>• Accurate pricing and quantity information is crucial for customer trust</li>
-                                    <li>• All fields marked with * are required</li>
-                                    <li>• Products will be reviewed before being published to the marketplace</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     );
 };
 
-export default AddProduct;
+export default UpdateProduct;

@@ -1,11 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router';
-
-const Product = ({product}) => {
-    const {image, 
-productName, brand, category, maxQuantity, price,description,_id,minQuantity} = product
-    // console.log(minQuantity, product );
-    return (
+const MyProduct = ({product}) => {
+    const {image, productName, brand, category, maxQuantity, price,description,_id,minQuantity} = product
+     return (
         <div className="card bg-white shadow-lg rounded-lg overflow-hidden">
       <figure className="bg-base-100">
         <img src={image} alt={productName} className="h-48 w-full object-cover" />
@@ -24,25 +21,15 @@ productName, brand, category, maxQuantity, price,description,_id,minQuantity} = 
         <div className="flex items-center justify-between mb-4">
           <span className="text-lg font-semibold text-primary">${price}</span>
         </div>
-       <div className='flex justify-between'>
-        <div className='w-[40%]'>
-           <NavLink to={`/product/${_id}`}>
-        <button className="btn btn-primary w-full">
-        Buy
-        </button>
-        </NavLink>
-        </div>
-        <div className='w-[40%]'>  <NavLink to={`/update/${_id}`}>
+        
+        <NavLink to={`/update/${_id}`}>
         <button className="btn btn-primary w-full">
         Edit
         </button>
-        </NavLink></div>
-       </div>
-       
-        
+        </NavLink>
       </div>
     </div>
     );
 };
 
-export default Product;
+export default MyProduct;

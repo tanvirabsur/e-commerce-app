@@ -8,6 +8,7 @@ const Products = () => {
    
     return (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-4 gap-4'>
+             <title>All products</title>
            {
             products.map(product => <Product key={product._id} product={product}></Product>)
            }

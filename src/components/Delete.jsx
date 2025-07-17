@@ -20,7 +20,7 @@ const Delete = () => {
                                form.reset();
                            }
         })
-        console.log(data);
+        
     }
     return (
         <div>

@@ -46,7 +46,7 @@ const ProductDetails = () => {
       shippingAddress2: formObject.shippingAddress2,
       phoneNumber: formObject.phoneNumber,
       productId: product._id,
-      productName: product.name,
+      productName: product.productName,
       productImage: product.image,
       productPrice: product.price,
       totalPrice: product.price * Number(formObject.quantity),
@@ -76,14 +76,14 @@ const ProductDetails = () => {
       return;
     } else {
       // https://assignment-11-server-six-sage.vercel.app
-      axios.post(`http://localhost:8080/addorder`, orderDetails,
+      axios.post(`https://assignment-11-server-six-sage.vercel.app/addorder`, orderDetails,
         {
           headers: {
             Authorization: `Bearer ${user?.accessToken}`
           }
         }
       ).then(res => {
-        console.log(res.data)
+        
         if (res.data.acknowledged) {
           Swal.fire({
             title: 'Success!',

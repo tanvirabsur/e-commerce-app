@@ -21,14 +21,14 @@ const Cart = () => {
   }, [orders, user]);
 
   
-  const handleDelete = async (id,quantity)=>{
+  const handleDelete = async (id,quantity,productId)=>{
     try {
       // Call your API to delete the order
       // productId=${productId}
-      await axios.delete(`http://localhost:8080/deleteorder/${id}?quantity=${quantity}&productId=${id}`)
+      await axios.delete(`https://assignment-11-server-six-sage.vercel.app/deleteorder/${id}?quantity=${quantity}&productId=${productId}`)
       
       .then(res => {
-        console.log(res.data);
+        
         
         if(res.data.success){
           setAllorders(prev => prev.filter(order => order._id !== id));

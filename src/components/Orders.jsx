@@ -4,7 +4,7 @@ import React from 'react';
 
 const Orders = ({product,handleDelete}) => {
 
-    const {productName, totalPrice, productDescription,quantity,productImage, _id,productBrand,productCategory,orderTimeText} = product;
+    const {productName, totalPrice, productDescription,quantity,productImage, _id,productBrand,productCategory,orderTimeText,productId} = product;
    
     return (
          <div  className="card bg-white shadow-lg rounded-lg overflow-hidden">
@@ -29,7 +29,7 @@ const Orders = ({product,handleDelete}) => {
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-lg font-semibold text-primary">${totalPrice}</span>
                 </div>
-                <button onClick={()=> handleDelete(_id, quantity)} className="btn btn-error w-full">
+                <button onClick={()=> handleDelete(_id, quantity,productId)} className="btn btn-error w-full">
                   Remove / Cancel
                 </button>
                 <p className="text-xs text-gray-500 mt-2 text-center">

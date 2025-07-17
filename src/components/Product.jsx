@@ -23,7 +23,14 @@ productName, brand, category, maxQuantity, price,description,_id,minQuantity} = 
         <p className="text-gray-700 mb-4">{description}</p>
         <div className="flex items-center justify-between mb-4">
           <span className="text-lg font-semibold text-primary">${price}</span>
+          <span className="ml-4 flex items-center">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span key={star} className={`text-xl ${star <= product.rating ? 'text-yellow-400' : 'text-gray-300'}`}>★</span>
+                  ))}
+                  <span className="ml-2 text-gray-500">({product.rating}/5)</span>
+                </span>
         </div>
+        
        <div className='flex justify-between'>
         <div className='w-[40%]'>
            <NavLink to={`/product/${_id}`}>

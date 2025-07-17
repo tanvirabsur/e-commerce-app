@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, use, useEffect } from 'react';
-
+import Loading from '../components/Loading'
 import Swal from 'sweetalert2';
 import { AuthContext } from '../authprovider/Authprovider';
 import { useParams } from 'react-router';
@@ -41,7 +41,7 @@ const UpdateProduct = () => {
             });
     }, [id]);
 
-console.log(product);
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -51,18 +51,18 @@ console.log(product);
 
         const updatedProduct = {
             image: formObject.image,
-            name: formObject.name,
-            mainQuantity: Number(formObject.mainQuantity),
-            minimumSellingQuantity: Number(formObject.minimumSellingQuantity),
-            brand: formObject.brandName,
+            productName: formObject.productName,
+            maxQuantity: Number(formObject.maxQuantity),
+            minQuantity: Number(formObject.minQuantity),
+            brand: formObject.brand,
             category: formObject.category,
-            shortDescription: formObject.shortDescription,
+            description: formObject.description,
             price: Number(formObject.price),
             rating: rating,
             authorName: user?.displayName,
             author: user?.email,
         }
-
+        
 
         axios.patch(`https://assignment-11-server-six-sage.vercel.app/update/${id}`, updatedProduct,
             {
@@ -72,7 +72,7 @@ console.log(product);
             }
         )
             .then(res => {
-                console.log(res.data);
+                
                 if (res.data.acknowledged) {
                     Swal.fire({
                         title: 'Success!',
@@ -89,13 +89,13 @@ console.log(product);
                     });
                 }
             })
-        console.log('Product Details-client:', updatedProduct);
+        
 
     };
 
 
     if (!product) {
-        return <div>Loading...</div>;
+        return <Loading></Loading>
     }
 
 

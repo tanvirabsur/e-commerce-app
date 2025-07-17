@@ -7,10 +7,8 @@ const PrivateRoute = ({children}) => {
     const {user,loading} = use(AuthContext)
     const {pathname} = useLocation()
 
-    // console.log(pathname);
-
-  
    
+    
     if(user && user.email){
         return children
     }

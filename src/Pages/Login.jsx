@@ -1,7 +1,7 @@
 import React, { use } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from '../authprovider/Authprovider';
-import { NavLink, useNavigate } from 'react-router';
+import { NavLink, useLocation, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 
 
@@ -13,6 +13,8 @@ const Login = () => {
     const { createUserWithGoogle } = use(AuthContext)
     const { login } = use(AuthContext)
     const navigate = useNavigate()
+    const location = useLocation()
+
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -22,7 +24,7 @@ const Login = () => {
 
         login(formObject.email, formObject.password)
             .then(() => {
-                navigate('/')
+                navigate(`${location.state ? location.state : '/'}`)
 
             })
             .catch(() => {
@@ -55,7 +57,7 @@ const Login = () => {
             <button onClick={()=>{
                 createUserWithGoogle()
                     .then(() => {
-                        navigate('/')
+                        navigate(`${location.state ? location.state : '/'}`)
                     })
                     .catch((error) => {
                         console.error('Google login failed:', error);

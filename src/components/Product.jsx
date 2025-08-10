@@ -6,7 +6,7 @@ const Product = ({product}) => {
 productName, brand, category, maxQuantity, price,description,_id,minQuantity} = product
     // console.log(minQuantity, product );
     return (
-        <div className="card bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="card bg-white shadow-lg rounded-lg overflow-hidden ">
       <figure className="bg-base-100">
         <img src={image} alt={productName} className="h-48 w-full object-cover" />
       </figure>
@@ -22,7 +22,7 @@ productName, brand, category, maxQuantity, price,description,_id,minQuantity} = 
         </div>
         <p className="text-gray-700 mb-4">{description}</p>
         <div className="flex items-center justify-between mb-4">
-          <span className="text-lg font-semibold text-primary">${price}</span>
+          <span className="text-lg font-semibold text-blue-500">${price}</span>
           <span className="ml-4 flex items-center">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <span key={star} className={`text-xl ${star <= product.rating ? 'text-yellow-400' : 'text-gray-300'}`}>★</span>
@@ -31,19 +31,21 @@ productName, brand, category, maxQuantity, price,description,_id,minQuantity} = 
                 </span>
         </div>
         
-       <div className='flex justify-between'>
-        <div className='w-[40%]'>
+       <div className=''>
+        <div className=''>
            <NavLink to={`/product/${_id}`}>
-        <button className="btn btn-primary w-full">
+        <button className="btn bg-blue-500 text-white w-full">
         Buy
         </button>
         </NavLink>
         </div>
-        <div className='w-[40%]'>  <NavLink to={`/update/${_id}`}>
+        {/* <div className='w-[40%]'>  
+          <NavLink to={`/update/${_id}`}>
         <button className="btn btn-primary w-full">
         Edit
         </button>
-        </NavLink></div>
+        </NavLink>
+        </div> */}
        </div>
        
         

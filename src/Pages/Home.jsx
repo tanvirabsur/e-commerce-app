@@ -6,6 +6,8 @@ import Slider from '../components/Slider';
 import Accordtion from '../components/Accordtion';
 import CountDown from '../components/CountDown';
 import Cetagory from '../components/Cetagory'
+import BeautifulProducts from '../components/BeautifulProducts';
+import Banner from '../components/Banner';
 const Home = () => {
   const products = useLoaderData();
   const uniqueByCategory = [];
@@ -24,7 +26,8 @@ const Home = () => {
   return (
     <>
       <title>Home</title>
-      <Slider></Slider>
+      {/* <Slider></Slider> */}
+      <Banner></Banner>
 
       <h1 className='text-3xl text-center font-bold my-4'>Featured Products</h1>
 
@@ -40,6 +43,8 @@ const Home = () => {
           uniqueByCategory.map(product => <Product key={product._id} product={product}></Product>)
         }
       </div>
+     
+      
       <Accordtion></Accordtion>
     </>
   );

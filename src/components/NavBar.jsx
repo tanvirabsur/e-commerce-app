@@ -26,10 +26,10 @@ const Navbar = () => {
 
     return (
         <>
-            <div className="navbar justify-between bg-base-100 shadow-sm">
+            <div className="navbar justify-between bg-base-100 shadow-sm fixed z-50">
                 <div className="navbar-start">
 
-                    <NavLink className={'btn btn-ghost text-xl'} to={'/'}>Lagbe?.com</NavLink>
+                    <NavLink className={'text-xl font-bold'} to={'/'}>ely<span className='text-blue-500'>qor</span></NavLink>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">

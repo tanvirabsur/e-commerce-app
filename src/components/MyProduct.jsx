@@ -23,7 +23,7 @@ const MyProduct = ({product}) => {
         </div>
         
         <NavLink to={`/update/${_id}`}>
-        <button className="btn btn-primary w-full">
+        <button className="btn bg-blue-500 text-white w-full">
         Edit
         </button>
         </NavLink>

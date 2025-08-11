@@ -26,7 +26,7 @@ const Navbar = () => {
 
     return (
         <>
-            <div className="navbar justify-between bg-base-100 shadow-sm fixed z-50">
+            <div className="navbar justify-between bg-base-100 shadow-sm  sticky z-50 top-0 mb-4">
                 <div className="navbar-start">
 
                     <NavLink className={'text-xl font-bold'} to={'/'}>Ely<span className='text-blue-500'>qor</span></NavLink>

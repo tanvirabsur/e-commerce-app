@@ -8,6 +8,7 @@ import CountDown from '../components/CountDown';
 import Cetagory from '../components/Cetagory'
 import BeautifulProducts from '../components/BeautifulProducts';
 import Banner from '../components/Banner';
+import Newsletter from '../components/Newsletter';
 const Home = () => {
   const products = useLoaderData();
   const uniqueByCategory = [];
@@ -46,6 +47,7 @@ const Home = () => {
      
       
       <Accordtion></Accordtion>
+      <Newsletter></Newsletter>
     </>
   );
 };

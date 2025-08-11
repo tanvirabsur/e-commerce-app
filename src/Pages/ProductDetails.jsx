@@ -108,7 +108,7 @@ const ProductDetails = () => {
 
   return (
     <div className="min-h-screen bg-base-200 py-8">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 mt-9">
         <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-8">
           <div className="flex flex-col md:flex-row gap-8">
             <img
@@ -125,7 +125,7 @@ const ProductDetails = () => {
                 <span className="badge badge-outline">Min. Order: {product.minQuantity}</span>
               </div>
               <div className="flex items-center gap-2 mt-2">
-                <span className="text-2xl font-semibold text-primary">${product.price}</span>
+                <span className="text-2xl font-semibold text-blue-500">${product.price}</span>
                 <span className="ml-4 flex items-center">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <span key={star} className={`text-xl ${star <= product.rating ? 'text-yellow-400' : 'text-gray-300'}`}>★</span>
@@ -138,7 +138,7 @@ const ProductDetails = () => {
                 <p>{product.content}</p>
               </div>
               <button
-                className="btn btn-primary mt-6 w-full md:w-auto"
+                className="btn bg-blue-500 text-white mt-6 w-full md:w-auto"
                 onClick={() => setShowModal(true)}
               >
                 Buy

@@ -35,7 +35,7 @@ productName, brand, category, maxQuantity, price,description,_id,minQuantity} = 
         <div className=''>
            <NavLink to={`/product/${_id}`}>
         <button className="btn bg-blue-500 text-white w-full">
-        Buy
+        See more
         </button>
         </NavLink>
         </div>

@@ -29,12 +29,11 @@ const Navbar = () => {
             <div className="navbar justify-between bg-base-100 shadow-sm fixed z-50">
                 <div className="navbar-start">
 
-                    <NavLink className={'text-xl font-bold'} to={'/'}>ely<span className='text-blue-500'>qor</span></NavLink>
+                    <NavLink className={'text-xl font-bold'} to={'/'}>Ely<span className='text-blue-500'>qor</span></NavLink>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
                         <li><NavLink to={'/'}>Home</NavLink></li>
-                        
                         <li><NavLink to={'/products'}>All Products</NavLink></li>
                         <li><NavLink to={'/addproduct'}>Add product</NavLink></li>
                         <li><NavLink to={'/myproducts'}>My Products</NavLink></li>

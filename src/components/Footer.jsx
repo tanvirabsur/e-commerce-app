@@ -24,7 +24,7 @@ const Footer = () => {
                 <a className="link link-hover">Cookie policy</a>
             </nav>
             <form>
-                <h6 className="footer-title">Newsletter</h6>
+                <h6 className="footer-title">Contact us</h6>
                 <fieldset className="w-80">
                     <label>Enter your email address</label>
                     <div className="join">
@@ -32,7 +32,7 @@ const Footer = () => {
                             type="text"
                             placeholder="username@site.com"
                             className="input input-bordered join-item" />
-                        <button className="btn btn-primary join-item">Subscribe</button>
+                        <button className="btn bg-blue-500 text-white join-item">Message</button>
                     </div>
                 </fieldset>
             </form>

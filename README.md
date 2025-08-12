@@ -7,7 +7,7 @@
 ![ESLint](https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white)
 
 This project is a comprehensive client-side application built with React, Vite, and Tailwind CSS. It showcases a variety of features, including user authentication, product management, and a responsive user interface.
-
+# live link : <a href="https://assignment-11-3f281.web.app/">click</a>
 ## Features
 
 *   **User Authentication:** Secure user registration and login functionality implemented with Firebase Authentication.

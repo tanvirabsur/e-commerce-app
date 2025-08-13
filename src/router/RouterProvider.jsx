@@ -15,6 +15,7 @@ import Error from "../components/Error";
 import UpdateProduct from "../Pages/UpdateProduct";
 import Delete from "../components/Delete";
 import Profile from "../Pages/Profile";
+import DashboardLayout from "../Pages/DashboardLayout";
 
 
 const router = createBrowserRouter([
@@ -94,6 +95,11 @@ const router = createBrowserRouter([
             }
                     
         ]
+        
+    },
+    {
+        path: '/dashboard',
+        element: <DashboardLayout></DashboardLayout>
     }
 ])
 

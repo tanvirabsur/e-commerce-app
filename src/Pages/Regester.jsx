@@ -1,4 +1,5 @@
 import React, { use } from 'react';
+import imageCompression from 'browser-image-compression';
 import { NavLink, useNavigate } from 'react-router';
 import { AuthContext } from '../authprovider/Authprovider';
 import axios from 'axios';
@@ -18,17 +19,24 @@ const Regester = () => {
 
         if (!img) return;
 
-        setLoading(true);
         setMessage("");
         setUploadedUrl("");
 
-        const formData = new FormData()
-        formData.append('file', img)
-        formData.append('upload_preset', 'regester-img')
-        // formData.append('cloud_name', 'dcc3yu4ae')
-        // const uri = import.meta.env.VITE_URL 
-
         try {
+            setLoading(true);
+            const options = {
+                maxSizeMB: 1, // সর্বোচ্চ 1MB
+                maxWidthOrHeight: 1024, // Width/Height limit
+                useWebWorker: true,
+            };
+
+            const compressedFile = await imageCompression(img, options);
+            // console.log('Compressed file size:', compressedFile.size / 1024, 'KB');
+
+            const formData = new FormData()
+            formData.append('file', compressedFile)
+            formData.append('upload_preset', 'regester-img')
+
             const res = await axios.post(`https://api.cloudinary.com/v1_1/dcc3yu4ae/image/upload`, formData)
             console.log(res.data);
             setUploadedUrl(res.data.secure_url);
@@ -47,6 +55,7 @@ const Regester = () => {
         const form = e.target;
         const formData = new FormData(form);
         formData.append('profile', uploadedUrl)
+        formData.append('role', 'user')
         const formObject = Object.fromEntries(formData.entries());
 
         createUser(formObject.email, formObject.password)
@@ -55,17 +64,14 @@ const Regester = () => {
                 console.log(user);
                 updateUser({ displayName: formObject.name, photoURL: formObject.profile })
                     .then(() => {
+                        // console.log(res);
                         axios.post(`https://assignment-11-server-six-sage.vercel.app/adduser`, formObject)
                             .then((res) => {
                                 // console.log(res.data);
                                 if (res.data.acknowledged) {
                                     navigate('/')
                                 }
-
-
                             })
-
-
                     })
             })
             .catch((err) => {

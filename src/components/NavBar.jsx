@@ -102,6 +102,9 @@ const Navbar = () => {
                             <li><NavLink to={'/products'}>All Products</NavLink></li>
                             <li className='lg:hidden'><NavLink to={'/addproduct'}>addproduct</NavLink></li>
                             <li><NavLink to={'/myproducts'}>My Products</NavLink></li>
+                            {
+                                user?.email && <li><NavLink to={'/user/profile'}>Profile</NavLink></li>
+                            }
                             <li className='lg:hidden'><NavLink to={'/cart'}>My Cart</NavLink></li>
                             <li><a className='' onClick={Logout}>Logout</a></li>
                         </ul>

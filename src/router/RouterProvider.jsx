@@ -16,19 +16,20 @@ import UpdateProduct from "../Pages/UpdateProduct";
 import Delete from "../components/Delete";
 import Profile from "../Pages/Profile";
 import DashboardLayout from "../Pages/DashboardLayout";
+import DashboardHome from "../Pages/DashboardHome";
 
 
 const router = createBrowserRouter([
 
-    
+
     {
         path: "/",
         Component: RootLayOut,
         hydrateFallbackElement: <Loading></Loading>,
-        children:[
+        children: [
             {
                 index: true,
-                loader: ()=> fetch(`https://assignment-11-server-six-sage.vercel.app/products`),
+                loader: () => fetch(`https://assignment-11-server-six-sage.vercel.app/products`),
                 Component: Home,
                 hydrateFallbackElement: <Loading></Loading>
             },
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/cart',
-                loader: ()=> fetch('https://assignment-11-server-six-sage.vercel.app/myorder' ),
+                loader: () => fetch('https://assignment-11-server-six-sage.vercel.app/myorder'),
                 Component: Cart,
                 hydrateFallbackElement: <Loading></Loading>
             },
@@ -57,16 +58,16 @@ const router = createBrowserRouter([
             },
             {
                 path: '/product/:id',
-                loader: ({params}) => fetch(`https://assignment-11-server-six-sage.vercel.app/product/${params.id}`),
+                loader: ({ params }) => fetch(`https://assignment-11-server-six-sage.vercel.app/product/${params.id}`),
                 element: <PrivateRoute><ProductDetails></ProductDetails></PrivateRoute>,
                 hydrateFallbackElement: <Loading></Loading>
-                
+
             },
             {
                 path: '/productcetagory',
                 Component: CetagoryProducts,
                 hydrateFallbackElement: <Loading></Loading>
-            },  
+            },
             {
                 path: '/regester',
                 Component: Regester,
@@ -93,13 +94,23 @@ const router = createBrowserRouter([
                 path: '/delete',
                 Component: Delete
             }
-                    
+
         ]
-        
+
     },
     {
         path: '/dashboard',
-        element: <DashboardLayout></DashboardLayout>
+        element: <DashboardLayout></DashboardLayout>,
+        children: [
+            {
+                index: true,
+                Component: DashboardHome
+            },
+            {
+                path: 'my-allproducts',
+                Component: Myproducts
+            }
+        ]
     }
 ])
 

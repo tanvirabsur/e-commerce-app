@@ -1,35 +1,78 @@
+
 import React from 'react';
 import { NavLink } from 'react-router';
-const MyProduct = ({product}) => {
-    const {image, productName, brand, category, maxQuantity, price,description,_id,minQuantity} = product
-     return (
-        <div className="card bg-white shadow-lg rounded-lg overflow-hidden">
-      <figure className="bg-base-100">
-        <img src={image} alt={productName} className="h-48 w-full object-cover" />
-      </figure>
-      <div className="card-body p-6">
-        <h2 className="card-title text-xl font-bold mb-2">{productName}</h2>
-        <div className="flex flex-wrap gap-2  text-gray-600 mb-2">
-          <span className="">Brand: {brand}</span>
-          <span className="">Category: {category}</span>
+
+const MyProduct = () => {
+  const product = {
+  image: "https://via.placeholder.com/200x200.png?text=Product+Image",
+  productName: "Wireless Headphones",
+  brand: "SoundMax",
+  category: "Electronics",
+  maxQuantity: 50,
+  minQuantity: 5,
+  price: 129.99,
+  description: "High-quality wireless headphones with noise cancellation and long battery life.",
+  _id: "prod123456"
+};
+  const { image, productName, brand, category, maxQuantity, price, description, _id, minQuantity } = product;
+
+  return (
+    <div style={{ 
+      backgroundColor: 'white', 
+      boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)', 
+      borderRadius: '0.75rem', 
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      <div style={{ height: '16rem', overflow: 'hidden' }}>
+        <img src={image} alt='' style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      </div>
+      <div style={{ padding: '1.5rem', flexGrow: '1', display: 'flex', flexDirection: 'column' }}>
+        <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{productName}</h2>
+        <div style={{ display: 'flex', gap: '1rem', color: '#4b5563', marginBottom: '1rem' }}>
+          <span>Brand:{brand} </span>
+          <span>Category: {category}</span>
         </div>
-        <div className="text-sm text-gray-500 mb-2">
-          <span className="mr-2">Main Qty: <span className="font-semibold">{minQuantity}</span></span>
-          <span>Min. Buying Qty: <span className="font-semibold">{maxQuantity}</span></span>
+        <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '1rem' }}>
+          <span style={{ marginRight: '1rem' }}>Max Qty: <span style={{ fontWeight: '600' }}>{maxQuantity}</span></span>
+          <span>Min Qty: <span style={{ fontWeight: '600' }}>{minQuantity}</span></span>
         </div>
-        <p className="text-gray-700 mb-4">{description}</p>
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-lg font-semibold text-primary">${price}</span>
+        <p style={{ color: '#374151', marginBottom: '1.5rem', flexGrow: '1' }}>{description}</p>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+          <span style={{ fontSize: '1.75rem', fontWeight: 'bold', color: '#10b981' }}>${price}</span>
         </div>
-        
-        <NavLink to={`/update/${_id}`}>
-        <button className="btn bg-blue-500 text-white w-full">
-        Edit
-        </button>
-        </NavLink>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <NavLink to={`/update/${_id}`} style={{ textDecoration: 'none' }}>
+            <button style={{
+              backgroundColor: '#3b82f6',
+              color: 'white',
+              width: '100%',
+              padding: '0.75rem',
+              borderRadius: '0.5rem',
+              border: 'none',
+              cursor: 'pointer',
+              fontWeight: '600'
+            }}>
+              Edit
+            </button>
+          </NavLink>
+          <button style={{
+            backgroundColor: '#ef4444',
+            color: 'white',
+            width: '100%',
+            padding: '0.75rem',
+            borderRadius: '0.5rem',
+            border: 'none',
+            cursor: 'pointer',
+            fontWeight: '600'
+          }}>
+            Delete
+          </button>
+        </div>
       </div>
     </div>
-    );
+  );
 };
 
 export default MyProduct;

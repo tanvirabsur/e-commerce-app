@@ -102,10 +102,11 @@ const AddProduct = () => {
             status: 'pending',
             authorName: user?.displayName,
             author: user?.email,
+            rating: rating
         }
 
         // Add rating to form object
-        formObject.rating = rating;
+        // formObject.rating = rating;
 
 
         axios.post(`https://assignment-11-server-six-sage.vercel.app/addproduct`, product,
@@ -133,7 +134,7 @@ const AddProduct = () => {
                     });
                 }
             })
-        // console.log('Product Details-client:', product);
+        console.log('Product Details-client:', product);
         setRating(5);
 
     };

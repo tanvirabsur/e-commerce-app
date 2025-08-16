@@ -9,6 +9,22 @@ import Swal from 'sweetalert2';
 const ProductDetails = () => {
   const product = useLoaderData()
 
+
+  const now = new Date();
+
+  const options = {
+    timeZone: 'Asia/Dhaka',   // BD time zone
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  };
+  const formatter = new Intl.DateTimeFormat('en-GB', options);
+  console.log("Date & Time:", formatter.format(now));
+  console.log(product);
+
   const { user } = use(AuthContext)
   const minQty = Number(product.minQuantity) || 1;
   const [showModal, setShowModal] = useState(false);
@@ -22,28 +38,13 @@ const ProductDetails = () => {
     const form = e.target;
     const formData = new FormData(form);
     const formObject = Object.fromEntries(formData.entries());
-    const now = new Date();
-    const bdTime = new Date(now.getTime() + (6 * 60 * 60 * 1000));
-
-    const orderISOTime = bdTime.toISOString();
-
-    // Readable format (for UI or history view)
-    const formattedOrderTime = bdTime.toLocaleString('en-BD', {
-      timeZone: 'Asia/Dhaka',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
-    });
 
     const orderDetails = {
       customerName: user.displayName,
       customerEmail: user.email,
       quantity: Number(formObject.quantity),
       shippingAddress: formObject.shippingAddress,
-      shippingAddress2: formObject.shippingAddress2,
+      // shippingAddress2: formObject.shippingAddress2,
       phoneNumber: formObject.phoneNumber,
       productId: product._id,
       productName: product.productName,
@@ -51,13 +52,11 @@ const ProductDetails = () => {
       productPrice: product.price,
       totalPrice: product.price * Number(formObject.quantity),
       orderStatus: 'pending',
-      orderDate: new Date().toISOString(),
       productBrand: product.brand,
       productCategory: product.category,
-      productDescription: product.shortDescription,
+      description: product.description,
       rating: product.rating,
-      orderdate: orderISOTime,                 // ✅ ISO format (BD time)
-      orderTimeText: formattedOrderTime,
+      orderTime: formatter.format(now),
     }
 
     if (product.minQuantity > formObject.quantity) {
@@ -75,7 +74,7 @@ const ProductDetails = () => {
       });
       return;
     } else {
-      // https://assignment-11-server-six-sage.vercel.app
+      
       axios.post(`https://assignment-11-server-six-sage.vercel.app/addorder`, orderDetails,
         {
           headers: {
@@ -83,7 +82,7 @@ const ProductDetails = () => {
           }
         }
       ).then(res => {
-        
+
         if (res.data.acknowledged) {
           Swal.fire({
             title: 'Success!',
@@ -103,7 +102,7 @@ const ProductDetails = () => {
       })
     }
 
-
+  console.log(orderDetails);
   }
 
   return (
@@ -116,6 +115,11 @@ const ProductDetails = () => {
               alt={product.productName}
               className="w-full md:w-80 h-56 object-cover rounded-lg border"
             />
+            <div className='carousel carousel-center border border-blue-500/50 rounded-box h-40 space-x-4 p-4 lg:hidden'>
+              {
+                product?.extraimages.map((img, index) => <div key={index} className='carousel-item'><img src={img} alt="" /></div>)
+              }
+            </div>
             <div className="flex-1 space-y-3">
               <h1 className="text-3xl font-bold mb-2">{product.productName}</h1>
               <div className="flex flex-wrap gap-2 text-sm text-gray-600">
@@ -143,9 +147,17 @@ const ProductDetails = () => {
               >
                 Buy
               </button>
+
             </div>
+
+          </div>
+          <div className='carousel carousel-center border border-blue-500/50 rounded-box h-40 space-x-4 p-4 hidden lg:flex lg:mt-2 '>
+            {
+              product?.extraimages.map(img => <div className='carousel-item'><img src={img} alt="" /></div>)
+            }
           </div>
         </div>
+
       </div>
 
       {/* Modal */}

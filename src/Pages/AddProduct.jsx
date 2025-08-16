@@ -2,14 +2,18 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { use } from 'react';
 import Swal from 'sweetalert2';
+import imageCompression from 'browser-image-compression';
 import { AuthContext } from '../authprovider/Authprovider';
 
 
 const AddProduct = () => {
-
+    const [mainImg, setImg] = useState('')
+    const [loading, setLoading] = useState(false);
+    const [Mainloading, setMainLoading] = useState(false);
+    const [extraImg, setExtraImg] = useState([])
     const [rating, setRating] = useState(5);
     const { user } = use(AuthContext)
-   
+
     const categories = [
         "Electronics & Gadgets",
         "Home & Kitchen Appliances",
@@ -20,23 +24,82 @@ const AddProduct = () => {
         "Office Supplies & Stationery"
     ];
 
+    const uploadMainImg = async (e) => {
+        const file = e.target.files[0]
+
+        try {
+            setLoading(true);
+            const options = {
+                maxSizeMB: 1, // সর্বোচ্চ 1MB
+                maxWidthOrHeight: 1024, // Width/Height limit
+                useWebWorker: true,
+            };
+
+            const compressedFile = await imageCompression(file, options);
+
+            const formData = new FormData()
+            formData.append('file', compressedFile)
+            formData.append('upload_preset', 'regester-img')
+
+            const res = await axios.post(`https://api.cloudinary.com/v1_1/dcc3yu4ae/image/upload`, formData)
+            setImg(res.data.url);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setLoading(false);
+        }
+    }
 
 
+    const uploadImg = async (e) => {
+        const file = e.target.files[0]
+        try {
+            setMainLoading(true);
+            const options = {
+                maxSizeMB: 1, // সর্বোচ্চ 1MB
+                maxWidthOrHeight: 1024, // Width/Height limit
+                useWebWorker: true,
+            };
+
+            const compressedFile = await imageCompression(file, options);
+
+            const formData = new FormData()
+            formData.append('file', compressedFile)
+            formData.append('upload_preset', 'regester-img')
+
+            const res = await axios.post(`https://api.cloudinary.com/v1_1/dcc3yu4ae/image/upload`, formData)
+            // console.log(res.data.url);
+            // setExtraImg(res.data.url);
+            setExtraImg(prev => [...prev, res.data.url])
+
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setMainLoading(false);
+        }
+        // setExtraImg(prev => [...prev, file])
+
+    }
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form);
         const formObject = Object.fromEntries(formData.entries());
+        // formData.append('hi','hello')
+
 
         const product = {
-            image: formObject.image,
-            productName: formObject.name,
-            minQuantity: Number(formObject.mainQuantity),
-            maxQuantity: Number(formObject.minimumSellingQuantity),
-            brand: formObject.brandName,
+            image: mainImg,
+            extraimages: extraImg,
+            productName: formObject.productName,
+            minQuantity: Number(formObject.minQuantity),
+            maxQuantity: Number(formObject.maxQuantity),
+            brand: formObject.brand,
             category: formObject.category,
-            description: formObject.shortDescription,
+            description: formObject.description,
             price: Number(formObject.price),
+            status: 'pending',
             authorName: user?.displayName,
             author: user?.email,
         }
@@ -70,35 +133,20 @@ const AddProduct = () => {
                     });
                 }
             })
-        console.log('Product Details-client:', formObject);
+        // console.log('Product Details-client:', product);
         setRating(5);
 
     };
 
-
+    // Mainloading
     return (
         <div className="min-h-screen bg-base-200 py-8">
-                         <title>Add product</title>
+            <title>Add product</title>
             <div className="container mx-auto px-4">
                 <div className="max-w-2xl mx-auto">
                     <h1 className="text-3xl font-bold text-center mb-8">Add New Product</h1>
 
                     <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-6 space-y-6">
-                        {/* Image Upload */}
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text font-semibold">Product Cover Image</span>
-                            </label>
-                            <input
-                                type="text"
-                                className="file-input file-input-bordered w-full"
-                                name="image"
-
-                                required
-                            />
-
-                        </div>
-
                         {/* Product Name */}
                         <div className="form-control">
                             <label className="label">
@@ -109,9 +157,52 @@ const AddProduct = () => {
                                 className="input input-bordered w-full"
                                 name="productName"
                                 placeholder="Enter product name"
-                                required
+                            // required
                             />
                         </div>
+                        {/* Image Upload */}
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text font-semibold">Main Product Image</span>
+                            </label>
+                            <input
+                                type="file"
+                                className="file-input file-input-bordered w-full"
+                                name="image"
+                                multiple
+                                onChange={uploadMainImg}
+                                // required
+                            />
+
+                            {loading && (
+                                <div className="flex items-center gap-2 text-blue-600">
+                                    <span className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></span>
+                                    Uploading...
+                                </div>
+                            )}
+
+                        </div>
+
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text font-semibold">Extra Product Image</span>
+                            </label>
+                            <input
+                                type="file"
+                                className="file-input file-input-bordered w-full"
+                                name="image"
+                                multiple
+                                onChange={uploadImg}
+                                // required
+                            />
+                            { Mainloading && (
+                                <div className="flex items-center gap-2 text-blue-600">
+                                    <span className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></span>
+                                    Uploading...
+                                </div>
+                            )}
+                        </div>
+
 
                         {/* Quantities */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -125,7 +216,7 @@ const AddProduct = () => {
                                     name="maxQuantity"
                                     placeholder="Total available quantity"
                                     min="1"
-                                    required
+                                // required
                                 />
                             </div>
                             <div className="form-control">
@@ -138,7 +229,7 @@ const AddProduct = () => {
                                     name="minQuantity"
                                     placeholder="Minimum order quantity"
                                     min="1"
-                                    required
+                                // required
                                 />
                             </div>
                         </div>
@@ -154,7 +245,7 @@ const AddProduct = () => {
                                     className="input input-bordered w-full"
                                     name="brand"
                                     placeholder="Enter brand name"
-                                    required
+                                // required
                                 />
                             </div>
                             <div className="form-control">
@@ -164,7 +255,7 @@ const AddProduct = () => {
                                 <select
                                     className="select select-bordered w-full"
                                     name="category"
-                                    required
+                                // required
                                 >
                                     <option value="">Select a category</option>
                                     {categories.map((category, index) => (
@@ -185,7 +276,7 @@ const AddProduct = () => {
                                 className="textarea textarea-bordered w-full h-24"
                                 name="description"
                                 placeholder="Brief description of the product"
-                                required
+                            // required
                             ></textarea>
                         </div>
 
@@ -204,7 +295,7 @@ const AddProduct = () => {
                                         placeholder="0.00"
                                         step="0.01"
                                         min="0"
-                                        required
+                                    // required
                                     />
                                 </div>
                             </div>

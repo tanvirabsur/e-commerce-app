@@ -8,10 +8,7 @@ import Swal from 'sweetalert2';
 
 const ProductDetails = () => {
   const product = useLoaderData()
-
-
   const now = new Date();
-
   const options = {
     timeZone: 'Asia/Dhaka',   // BD time zone
     year: 'numeric',
@@ -22,9 +19,7 @@ const ProductDetails = () => {
     second: '2-digit'
   };
   const formatter = new Intl.DateTimeFormat('en-GB', options);
-  console.log("Date & Time:", formatter.format(now));
-  console.log(product);
-
+  
   const { user } = use(AuthContext)
   const minQty = Number(product.minQuantity) || 1;
   const [showModal, setShowModal] = useState(false);

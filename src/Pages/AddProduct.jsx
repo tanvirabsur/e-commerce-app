@@ -14,6 +14,18 @@ const AddProduct = () => {
     const [rating, setRating] = useState(5);
     const { user } = use(AuthContext)
 
+    const now = new Date();
+    const options = {
+        timeZone: 'Asia/Dhaka',   // BD time zone
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    };
+    const formatter = new Intl.DateTimeFormat('en-GB', options);
+
     const categories = [
         "Electronics & Gadgets",
         "Home & Kitchen Appliances",
@@ -80,7 +92,7 @@ const AddProduct = () => {
         // setExtraImg(prev => [...prev, file])
 
     }
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const form = e.target;
@@ -102,7 +114,8 @@ const AddProduct = () => {
             status: 'pending',
             authorName: user?.displayName,
             author: user?.email,
-            rating: rating
+            rating: rating,
+            publishDate:formatter.format(now)
         }
 
         // Add rating to form object
@@ -172,7 +185,7 @@ const AddProduct = () => {
                                 name="image"
                                 multiple
                                 onChange={uploadMainImg}
-                                // required
+                            // required
                             />
 
                             {loading && (
@@ -194,9 +207,9 @@ const AddProduct = () => {
                                 name="image"
                                 multiple
                                 onChange={uploadImg}
-                                // required
+                            // required
                             />
-                            { Mainloading && (
+                            {Mainloading && (
                                 <div className="flex items-center gap-2 text-blue-600">
                                     <span className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></span>
                                     Uploading...

@@ -17,6 +17,7 @@ import Delete from "../components/Delete";
 import Profile from "../Pages/Profile";
 import DashboardLayout from "../Pages/DashboardLayout";
 import DashboardHome from "../Pages/DashboardHome";
+import AllProducts from "../components/AllProducts";
 
 
 const router = createBrowserRouter([
@@ -107,8 +108,8 @@ const router = createBrowserRouter([
                 Component: DashboardHome
             },
             {
-                path: 'my-allproducts',
-                Component: Myproducts
+                path: 'allproducts',
+                Component: AllProducts
             }
         ]
     }

@@ -22,7 +22,7 @@ productName, brand, category, maxQuantity, price,description,_id,minQuantity} = 
         </div>
         <p className="text-gray-700 mb-4">{description}</p>
         <div className="flex items-center justify-between mb-4">
-          <span className="text-lg font-semibold text-blue-500">${price}</span>
+          <span className="text-lg font-semibold text-blue-500">{price} BDT</span>
           <span className="ml-4 flex items-center">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <span key={star} className={`text-xl ${star <= product.rating ? 'text-yellow-400' : 'text-gray-300'}`}>★</span>

@@ -34,10 +34,10 @@ const Home = () => {
 
       <p className='text-center text-gray-500 mb-4'>Explore our exclusive collection of products</p>
 
-      <div className='flex flex-col lg:flex-row items-center gap-3 ml-[3%] py-5'>
+      {/* <div className='flex flex-col lg:flex-row items-center gap-3 ml-[3%] py-5'>
         <p className='text-3xl text-center font-bold my-4'>Flash sell on going : </p>
         <CountDown></CountDown>
-      </div>
+      </div> */}
       <Cetagory products={products} uniqueByCategory={uniqueByCategory}></Cetagory>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 p-4  mx-auto'>
         {

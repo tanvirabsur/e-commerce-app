@@ -30,7 +30,7 @@ const ProductCard = ({
         </div>
         <p className="text-gray-700 mb-4">{description}</p>
         <div className="flex items-center justify-between mb-4">
-          <span className="text-lg font-semibold text-primary">${price?.toFixed(2)}</span>
+          <span className="text-lg font-semibold text-primary">{price?.toFixed(2)} BDT</span>
         </div>
         <button className="btn btn-primary w-full" onClick={onAction}>
           {actionLabel}

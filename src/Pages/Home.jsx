@@ -9,6 +9,7 @@ import Cetagory from '../components/Cetagory'
 import BeautifulProducts from '../components/BeautifulProducts';
 import Banner from '../components/Banner';
 import Newsletter from '../components/Newsletter';
+import NewHero from '../components/NewHero';
 const Home = () => {
   const products = useLoaderData();
   const uniqueByCategory = [];
@@ -28,8 +29,8 @@ const Home = () => {
     <>
       <title>Home</title>
       {/* <Slider></Slider> */}
-      <Banner></Banner>
-
+      {/* <Banner></Banner> */}
+    <NewHero/>
       <h1 className='text-3xl text-center font-bold my-4'>Featured Products</h1>
 
       <p className='text-center text-gray-500 mb-4'>Explore our exclusive collection of products</p>

@@ -6,6 +6,9 @@ const Profile = () => {
     const { user } = use(AuthContext)
 
     const toggleEdit = async () => {
+        // if(e.target.innerText === 'Save'){
+        //     console.log('save clicked');
+        // }
         setIsEditing(!isEditing);
     }
 
@@ -14,7 +17,7 @@ const Profile = () => {
             <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
                 <div className="relative">
                     <div className="h-48 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1549989476-69a92fa57c36?q=80&w=2070&auto=format&fit=crop')" }}></div>
-                    <img src={user?.photoURL} alt="User Avatar" className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-[25%] h-28 rounded-full border-8 border-white shadow-lg" />
+                    <img src={user?.photoURL} alt="User Avatar" className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rounded-full border-8 border-white shadow-lg" />
                 </div>
                 <div className="pt-20 p-6 text-center">
                     <h2 className="text-3xl font-bold text-gray-800">{user?.displayName}</h2>
@@ -24,7 +27,7 @@ const Profile = () => {
                     <div className="flex justify-end mb-4">
                         <button type='submit' onClick={toggleEdit} className={`btn ${isEditing ? 'btn-secondary' : 'btn-primary'} gap-2`}>
                             {isEditing ? <FaSave /> : <FaEdit />}
-                            {isEditing ? 'Save' : 'Edit Profile'}
+                            {isEditing ? `Save` : 'Edit Profile'}
                         </button>
                     </div>
                     <form className="space-y-4">
